@@ -3,7 +3,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 
 from api.permissions import IsOwnerOrReadOnly
-from api.serializers import RecipeListSerializer
+from api.serializers import RecipeListSerializer, RecipeCreateUpdateSerializer
 from recipes.models import Recipe
 
 
@@ -24,7 +24,7 @@ class RecipesViewSet(ModelViewSet):
     def get_queryset(self):
         qs = Recipe.objects.add_user_annotations(self.request.user.pk)
 
-        # Фильтры из GET-параметров запроса.
+        # Фильтры из GET-параметров запроса, например.
         author = self.request.query_params.get('author', None)
         if author:
             qs = qs.filter(author=author)

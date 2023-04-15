@@ -38,6 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'rest_framework',
+    'rest_framework.authtoken',
+    # 'djoser',
+
     'recipes',
     'api',
     'users',
@@ -123,5 +127,25 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-
 AUTH_USER_MODEL = 'users.User'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+    'TEST_REQUEST_DEFAULT_FORMAT': 'json'
+}
+
+# DJOSER = {
+#     'LOGIN_FIELD': 'email',
+#     'SERIALIZERS': {
+#         'user': 'api.serializers.CustomUserSerializer',
+#         'current_user': 'api.serializers.CustomUserSerializer',
+#         'user_create': 'api.serializers.CustomUserCreateSerializer',
+#     },
+#     'HIDE_USERS': False,
+#     'PERMISSIONS': {
+#         'user': ['djoser.permissions.CurrentUserOrAdminOrReadOnly'],
+#         'user_list': ['rest_framework.permissions.AllowAny'],
+#     }
+# }

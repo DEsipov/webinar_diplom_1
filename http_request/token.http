@@ -1,0 +1,27 @@
+### Create user
+POST http://localhost:8000/api/v1/auth/signup/
+Accept: application/json
+Cache-Control: no-cache
+
+{
+  "username": "User1",
+  "email": "user1@mail.ru"
+}
+
+### Get Token
+POST http://localhost:8000/api/v1/auth/token/
+Accept: application/json
+Cache-Control: no-cache
+
+{
+  "username": "User1",
+  "confirmation_code": "69j-f2f4e076d3c4309f0ac5"
+}
+
+### ME
+GET http://localhost:8000/api/v1/users/me/
+Accept: application/json
+Cache-Control: no-cache
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzExMzY4NzY0LCJpYXQiOjE2Nzk4MzI3NjQsImp0aSI6IjExNmMzODQxNTBjMTRiOGE4YTc0YmI5ZjgxMDFlZmJhIiwidXNlcl9pZCI6Mn0.xAWF0S4KcLY2mMXo17BUzly9g5bxl_6VN3YS0m-MI6s
+
+###
