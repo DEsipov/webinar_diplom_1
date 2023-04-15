@@ -4,11 +4,11 @@ from rest_framework import routers
 
 from api.views import RecipesViewSet
 
-router = routers.DefaultRouter()
-router.register(r'recipes', RecipesViewSet)
+router_v1 = routers.DefaultRouter()
+router_v1.register(r'recipes', RecipesViewSet)
 
 urlpatterns = [
     url(r'^auth/', include('djoser.urls.authtoken')),
-    url(r'', include(router.urls)),
+    url(r'', include(router_v1.urls)),
 
 ]
