@@ -81,10 +81,23 @@ WSGI_APPLICATION = 'foodgram.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
+# Для локальной разработки.
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
+
+# Использование PG для взрослого запуска.
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('POSTGRES_DB', 'postgres'),
+        'USER': os.getenv('POSTGRES_USER', 'postgres'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD', ''),
+        'HOST': os.getenv('DB_HOST', ''),
+        'PORT': os.getenv('DB_PORT', 5432)
     }
 }
 
@@ -136,16 +149,13 @@ REST_FRAMEWORK = {
     'TEST_REQUEST_DEFAULT_FORMAT': 'json'
 }
 
-# DJOSER = {
-#     'LOGIN_FIELD': 'email',
-#     'SERIALIZERS': {
-#         'user': 'api.serializers.CustomUserSerializer',
-#         'current_user': 'api.serializers.CustomUserSerializer',
-#         'user_create': 'api.serializers.CustomUserCreateSerializer',
-#     },
-#     'HIDE_USERS': False,
-#     'PERMISSIONS': {
-#         'user': ['djoser.permissions.CurrentUserOrAdminOrReadOnly'],
-#         'user_list': ['rest_framework.permissions.AllowAny'],
-#     }
-# }
+# Url для формирования ссылки на media
+MEDIA_URL = '/media/'
+# Место на в контейнере backend, где будет лежать медиа
+MEDIA_ROOT = '/app/media/'
+
+# Url для формирования ссылки на статику
+STATIC_URL = '/static/django/'
+# Место на в контейнере backend, где будет лежать статика, когда
+# ее соберем с помощью ./manage.py collectstatic
+STATIC_ROOT = '/app/static_django/'
