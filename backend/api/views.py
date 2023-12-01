@@ -1,10 +1,20 @@
 from djoser.views import UserViewSet
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 
 from api.permissions import IsOwnerOrReadOnly
-from api.serializers import RecipeListSerializer, RecipeCreateUpdateSerializer
+from api.serializers import (RecipeListSerializer,
+                             RecipeCreateUpdateSerializer,
+                             TagSerializer)
 from recipes.models import Recipe, Tag
+
+
+class CustomPagination(PageNumberPagination):
+    """Не забываем про паджинатор
+
+    Причем кастомный, т.к. там ожидается параметра limit."""
+    page_size_query_param = 'limit'
 
 
 class CustomUserViewSet(UserViewSet):
@@ -18,6 +28,7 @@ class RecipesViewSet(ModelViewSet):
     queryset = Recipe.objects.all()
     http_method_names = ['get', 'post', 'patch', ]
     permission_classes = (IsAuthenticated, IsOwnerOrReadOnly)
+    pagination_class = CustomPagination
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
@@ -39,7 +50,8 @@ class RecipesViewSet(ModelViewSet):
         return qs
 
 
-class TagViewSet(ModelViewSet):
+class TagViewSet(ReadOnlyModelViewSet):
+    serializer_class = TagSerializer
     queryset = Tag.objects.all()
-    permission_classes = (IsAuthenticated, )
-    http_method_names = ['get', ]
+    pagination_class = None
+

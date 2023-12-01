@@ -26,6 +26,8 @@ class RecipeListSerializer(serializers.ModelSerializer):
 
     ingredients = serializers.SerializerMethodField()
     is_favorite = serializers.BooleanField()
+    author = serializers.SlugRelatedField(slug_field='username',
+                                          read_only=True)
 
     def get_ingredients(self, obj):
         """Возвращает отдельный сериализатор."""
@@ -35,7 +37,7 @@ class RecipeListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Recipe
-        fields = ('name', 'ingredients', 'is_favorite', 'text')
+        fields = ('name', 'ingredients', 'is_favorite', 'text', 'author')
 
 
 class IngredientCreateInRecipeSerializer(serializers.ModelSerializer):
