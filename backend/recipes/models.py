@@ -115,3 +115,17 @@ class Favorite(models.Model):
         ]
         verbose_name = 'Объект избранного'
         verbose_name_plural = 'Объекты избранного'
+
+
+class Tag(models.Model):
+    """Тэги."""
+    # Отображается в UI
+    name = models.CharField(
+        max_length=200, verbose_name='Название', unique=True
+    )
+    color = models.CharField(
+        max_length=200, null=True, verbose_name='Цвет', unique=True
+    )
+    slug = models.SlugField(
+        max_length=200, null=True, verbose_name='Слаг', unique=True
+    )

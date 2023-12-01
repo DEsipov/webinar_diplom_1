@@ -157,3 +157,13 @@ STATIC_URL = '/static/django/'
 # Место на в контейнере backend, где будет лежать статика, когда
 # ее соберем с помощью ./manage.py collectstatic
 STATIC_ROOT = '/app/static_django/'
+
+
+# Говорим djoser, что для логина нужна почта.
+DJOSER = {
+    'LOGIN_FIELD': 'email',
+    'PERMISSIONS': {
+        'user': ['djoser.permissions.CurrentUserOrAdminOrReadOnly'],
+        'user_list': ['rest_framework.permissions.AllowAny'],
+    }
+}

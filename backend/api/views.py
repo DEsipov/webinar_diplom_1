@@ -1,10 +1,17 @@
-from django.shortcuts import render
+from djoser.views import UserViewSet
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 
 from api.permissions import IsOwnerOrReadOnly
 from api.serializers import RecipeListSerializer, RecipeCreateUpdateSerializer
-from recipes.models import Recipe
+from recipes.models import Recipe, Tag
+
+
+class CustomUserViewSet(UserViewSet):
+    """Api для работы с пользователями.
+
+    Там все, что нам нужно. CRUD + action me и прочее. См. исходники.
+    """
 
 
 class RecipesViewSet(ModelViewSet):
@@ -30,3 +37,9 @@ class RecipesViewSet(ModelViewSet):
             qs = qs.filter(author=author)
 
         return qs
+
+
+class TagViewSet(ModelViewSet):
+    queryset = Tag.objects.all()
+    permission_classes = (IsAuthenticated, )
+    http_method_names = ['get', ]

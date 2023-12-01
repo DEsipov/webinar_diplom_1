@@ -1,7 +1,7 @@
 #!-*-coding:utf-8-*-
 from rest_framework import serializers
 
-from recipes.models import Ingredient, RecipeIngredient, Recipe
+from recipes.models import Ingredient, RecipeIngredient, Recipe, Tag
 
 
 class RecipeIngredientSerializer(serializers.ModelSerializer):
@@ -106,3 +106,9 @@ class RecipeCreateUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Recipe
         fields = ('name', 'ingredients', 'text')
+
+
+class TagSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Tag
