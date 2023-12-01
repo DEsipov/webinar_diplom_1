@@ -25,7 +25,10 @@ SECRET_KEY = '8$gn^##34=dl*(mka_sj$t)7d9bh)&q#*etaw6#@uib039(lt7'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# Это только для отладки. Разрешаем обращения к нашему приложению с
+# любых адресов. И это очень небезопасно, если что, более того недопустимо
+# в реальных проектах на проде.
+ALLOWED_HOSTS = ['*', ]
 
 
 # Application definition
