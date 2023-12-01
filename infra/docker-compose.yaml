@@ -44,8 +44,8 @@ services:
   nginx:
     image: nginx:1.19.3
     ports:
-      - "8000:80"  # для запуска на сервере
-      # Для локального запуска
+      - "8000:80"  # для запуска на сервере (внешний:внутренний)
+      # Для локального запуска localhost/admin, localhosta.
 #      - "80:80"
     volumes:
       # Конфиг nginx, будет лежать в той же директории,
@@ -59,6 +59,7 @@ services:
       - ../docs/:/usr/share/nginx/html/api/docs/
       # Место в контейнере куда попадет статика фронта.
       - static_frontend:/static_frontend/
+#      - ../frontend/build:/usr/share/nginx/html/
 
     depends_on:
       - backend
