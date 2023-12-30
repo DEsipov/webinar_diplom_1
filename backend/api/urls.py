@@ -5,8 +5,9 @@ from rest_framework import routers
 from api.views import RecipesViewSet, CustomUserViewSet, TagViewSet
 
 router_v1 = routers.DefaultRouter()
+router_v1.register(r'tags', TagViewSet, basename='tags')
+
 router_v1.register('users', CustomUserViewSet, basename='users')
-router_v1.register(r'tags', TagViewSet)
 router_v1.register(r'recipes', RecipesViewSet)
 
 urlpatterns = [

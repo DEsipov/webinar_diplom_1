@@ -4,7 +4,7 @@ from rest_framework import status
 from rest_framework.test import APITransactionTestCase
 from rest_framework.authtoken.models import Token
 
-from recipes.models import User, Recipe, Ingredient, RecipeIngredient
+from recipes.models import User, Recipe, Ingredient, RecipeIngredient, Tag
 
 
 class RecipesApiTestCase(APITransactionTestCase):
@@ -65,3 +65,23 @@ class RecipesApiTestCase(APITransactionTestCase):
             amount=ing.get('amount'),
             ingredient=self.salt.id).last()
         self.assertEqual(ing.get('amount'), str(rec_ing.amount))
+
+
+class TagApiTestCase(APITransactionTestCase):
+    """Тесты api тэгов."""
+
+    def setUp(self) -> None:
+        self.tag = Tag.objects.create(
+            name='dinner',
+            color='black',
+            slug='din'
+        )
+
+    def test_list(self):
+        url = reverse('tags-list')
+
+        resp = self.client.get(url)
+
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        obj = resp.data[0]
+        self.assertEqual(obj['name'], self.tag.name)

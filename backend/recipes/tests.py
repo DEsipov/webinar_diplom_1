@@ -29,3 +29,9 @@ class RecipeModelTestCase(TestCase):
 
         qs = Recipe.objects.add_user_annotations(user_id=self.user.id)
         self.assertEqual(qs.values()[0]['is_favorite'], True)
+
+
+class IngredientModelTestCase(TestCase):
+
+    def test_smoke(self):
+        Ingredient.objects.create(name='salt', measurement_unit='gr')
