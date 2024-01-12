@@ -6,8 +6,8 @@ from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from api.permissions import IsOwnerOrReadOnly
 from api.serializers import (RecipeListSerializer,
                              RecipeCreateUpdateSerializer,
-                             TagSerializer)
-from recipes.models import Recipe, Tag
+                             TagSerializer, IngredientSerializer)
+from recipes.models import Recipe, Tag, Ingredient
 
 
 class CustomPagination(PageNumberPagination):
@@ -22,6 +22,12 @@ class CustomUserViewSet(UserViewSet):
 
     Там все, что нам нужно. CRUD + action me и прочее. См. исходники.
     """
+    serializer_class = None
+
+    def get_serializer_class(self):
+        # if self.action == "create":
+        #     return CustomUserCreateSerializer
+        return super().get_serializer_class()
 
 
 class RecipesViewSet(ModelViewSet):
@@ -52,3 +58,8 @@ class RecipesViewSet(ModelViewSet):
 class TagViewSet(ModelViewSet):
     serializer_class = TagSerializer
     queryset = Tag.objects.all()
+
+
+class IngredientViewSet(ModelViewSet):
+    serializer_class = IngredientSerializer
+    queryset = Ingredient.objects.all()

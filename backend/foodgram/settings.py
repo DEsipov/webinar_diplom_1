@@ -92,7 +92,7 @@ DATABASES = {
     }
 }
 
-# Использование PG для взрослого запуска.
+# # Использование PG для взрослого запуска.
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql',
@@ -160,7 +160,7 @@ STATIC_URL = '/static/django/'
 
 # Место на в контейнере backend, где будет лежать статика, когда
 # ее соберем с помощью ./manage.py collectstatic
-STATIC_ROOT = '/app/static_django/'
+STATIC_ROOT = '/app/_django/'
 
 
 # Говорим djoser, что для логина нужна почта.
