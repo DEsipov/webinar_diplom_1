@@ -17,6 +17,10 @@ services:
 
   backend:
     build: ../backend/
+    # Здесь указываем, что контейнер берет переменные из файла
+    # И, собственно, путь к нему.
+    # В данном примере он должен лежать в одной
+    # директории с docker-compose.yaml
     env_file: .env
     # Именнованные тома для статики и медиа в контейнера django.
     # Т.е. тут будет лежать статика и меди
@@ -24,7 +28,7 @@ services:
       - static:/app/static_django/
       - media:/app/media/
     depends_on:
-      - db 
+      - db
 
   frontend:
     # Для простоты отладки, т.к. в этом образе мы код не меняем. Указываем
@@ -60,6 +64,5 @@ services:
       # Место в контейнере куда попадет статика фронта.
       - static_frontend:/static_frontend/
 #      - ../frontend/build:/usr/share/nginx/html/
-
     depends_on:
       - backend

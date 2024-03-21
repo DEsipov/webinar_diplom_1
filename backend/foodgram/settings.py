@@ -23,13 +23,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '8$gn^##34=dl*(mka_sj$t)7d9bh)&q#*etaw6#@uib039(lt7'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = bool(int(os.getenv('DEBUG', False)))
 
 # Это только для отладки. Разрешаем обращения к нашему приложению с
 # любых адресов. И это очень небезопасно, если что, более того недопустимо
 # в реальных проектах на проде.
 ALLOWED_HOSTS = ['*', ]
-
 
 # Application definition
 
@@ -92,7 +91,7 @@ DATABASES = {
     }
 }
 
-# # Использование PG для взрослого запуска.
+# Использование PG для взрослого запуска.
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql',
@@ -147,6 +146,7 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
     ),
+    # Чтобы тесты нормально работали с вложенными сериализаторами.
     'TEST_REQUEST_DEFAULT_FORMAT': 'json'
 }
 
@@ -160,8 +160,7 @@ STATIC_URL = '/static/django/'
 
 # Место на в контейнере backend, где будет лежать статика, когда
 # ее соберем с помощью ./manage.py collectstatic
-STATIC_ROOT = '/app/_django/'
-
+STATIC_ROOT = '/app/static_django/'
 
 # Говорим djoser, что для логина нужна почта.
 DJOSER = {

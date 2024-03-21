@@ -1,6 +1,7 @@
 from django.test import TestCase
 
-from recipes.models import Recipe, Ingredient, RecipeIngredient, Favorite
+from recipes.models import (Recipe, Ingredient, RecipeIngredient, Favorite,
+                            Subscription)
 from users.models import User
 
 
@@ -35,3 +36,15 @@ class IngredientModelTestCase(TestCase):
 
     def test_smoke(self):
         Ingredient.objects.create(name='salt', measurement_unit='gr')
+
+
+class SubscriptionTestCase(TestCase):
+
+    def test_subscriptions_user(self):
+        user = User.objects.create_user(username='user', email='u@u.ru')
+        author = User.objects.create_user(username='author', email='a@a.ru')
+        Subscription.objects.create(user=user, author=author)
+
+        qs = User.objects.filter(subscribed_by__user=user)
+
+        print(qs)

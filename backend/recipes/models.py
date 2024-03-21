@@ -1,14 +1,21 @@
 from typing import Optional
 
 from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import Exists, OuterRef
 
 User = get_user_model()
 
 
+def not_honey(value):
+    if value == 'honey':
+        raise ValidationError('Honey is Good!')
+
+
 class Ingredient(models.Model):
-    name = models.CharField(max_length=200, verbose_name='Название')
+    name = models.CharField(max_length=200, verbose_name='Название',
+                            validators=[not_honey])
     measurement_unit = models.CharField(
         max_length=200, verbose_name='Единицы измерения'
     )
@@ -129,3 +136,20 @@ class Tag(models.Model):
     slug = models.SlugField(
         max_length=200, null=True, verbose_name='Слаг', unique=True
     )
+
+
+class Subscription(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='subscribed_to',
+        verbose_name='Подписчик'
+    )
+    author = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='subscribed_by',
+        verbose_name='Автор')
+
+    def __str__(self):
+        return f'Подписка {self.user} на {self.author}'

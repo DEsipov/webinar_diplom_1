@@ -56,6 +56,10 @@ class IngredientCreateInRecipeSerializer(serializers.ModelSerializer):
 class RecipeCreateUpdateSerializer(serializers.ModelSerializer):
     ingredients = IngredientCreateInRecipeSerializer(many=True)
 
+    class Meta:
+        model = Recipe
+        fields = ('name', 'ingredients', 'text', )
+
     def validate_ingredients(self, value):
         if len(value) < 1:
             raise serializers.ValidationError("Добавьте хотя бы один ингредиент.")
@@ -97,17 +101,35 @@ class RecipeCreateUpdateSerializer(serializers.ModelSerializer):
         return super().update(instance, validated_data)
 
     def to_representation(self, obj):
-        """Возвращаем прдеставление в таком же виде, как и GET-запрос."""
+        # FIX: данные для редактирования приходят в одном формате, а отдать
+        # их надо в другом формате.
+
+        # Т.к. если мы обычный Recipe засунем в этот сериалайзер.
+        # RecipeEditSerializer(instance=recipe), то в объявленное нами
+        # поле ingredients, попадет recipe.ingredients,
+        # а там объекты Ingredient, а у объекта Ingredient нет атрибута
+        # ingredient_id, который мы указали, как источник для id
+        # в сериалайзере IngredientInRecipeEditSerializer
+        # id = serializers.IntegerField(source='ingredient_id')
+
+        # Поэтому убираем проблемное поле. Чтобы не ломать сериализатор.
         self.fields.pop('ingredients')
+
+        # Аналогично и для тэгов.
+        # Убираем проблемное, ставим свое поле.
+        # self.fields['tags'] = TagSerializer(many=True)
+
+        # Здесь будет уже OrderedDict с данными.
         representation = super().to_representation(obj)
+
+        # В него и впихиваем, как в обычный словарь
+        # ингредиенты в нужном нам формате. Подменить так, как с тэгами не
+        # прокатит, т.к. мы поле явно объявили в сериализаторе, как атрибут.
         representation['ingredients'] = RecipeIngredientSerializer(
             RecipeIngredient.objects.filter(recipe=obj).all(), many=True
         ).data
-        return representation
 
-    class Meta:
-        model = Recipe
-        fields = ('name', 'ingredients', 'text')
+        return representation
 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -121,3 +143,7 @@ class IngredientSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Ingredient
+        fields = '__all__'
+
+    # def validate(self, attrs):
+    #     ...

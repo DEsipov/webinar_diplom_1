@@ -63,3 +63,6 @@ class TagViewSet(ModelViewSet):
 class IngredientViewSet(ModelViewSet):
     serializer_class = IngredientSerializer
     queryset = Ingredient.objects.all()
+
+    # def get_serializer_class(self):
+    #     return super().get_serializer_class()

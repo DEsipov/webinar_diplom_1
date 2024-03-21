@@ -12,7 +12,7 @@ class RecipesApiTestCase(APITransactionTestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.url = reverse('recipe-list')
+        cls.url = reverse('recipes-list')
 
     def setUp(self) -> None:
         self.user = User.objects.create_user(username='vi')
@@ -50,10 +50,12 @@ class RecipesApiTestCase(APITransactionTestCase):
         data = dict(
             name='Pie',
             text='Create pie',
-            ingredients=[{'id': self.salt.id, 'amount': '22'}, ]
+            ingredients=[{'id': self.salt.id, 'amount': '22'}, ],
         )
 
-        resp = self.client.post(self.url, data=data)
+        resp = self.client.post(self.url, data=data, format='json')
+
+        print(resp.data)
 
         self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
 
@@ -147,4 +149,33 @@ class UserApiTestCase(APITransactionTestCase):
 
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         self.assertEqual(resp.data.get('email'), user.email)
+
+
+class IngredientApiTestCase(APITransactionTestCase):
+    """Тесты api ингредиентов."""
+
+    def setUp(self) -> None:
+        self.ing = Ingredient.objects.create(
+            name='salt',
+            measurement_unit='kg',
+        )
+
+    def test_list(self):
+        url = reverse('ingredients-list')
+
+        resp = self.client.post(url)
+
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        obj = resp.data[0]
+        self.assertEqual(obj['name'], self.ing.name)
+
+    def test_create(self):
+        url = reverse('ingredients-list')
+        data = {'name': 'honey', 'measurement_unit': 'kg'}
+
+        resp = self.client.post(url, data=data)
+
+        self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
+        # obj = resp.data[0]
+        # self.assertEqual(obj['name'], self.ing.name)
 
